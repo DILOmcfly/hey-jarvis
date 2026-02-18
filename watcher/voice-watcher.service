@@ -1,0 +1,16 @@
+[Unit]
+Description=Hey Jarvis V3 - Voice Watcher Daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/YOUR_USER/.venv-whisper/bin/python3 /home/YOUR_USER/.openclaw/workspace/projects/hey-jarvis-v3/watcher/voice_watcher.py
+Restart=on-failure
+RestartSec=10
+Environment=OPENCLAW_GATEWAY_TOKEN=YOUR_GATEWAY_TOKEN_HERE
+Environment=OPENCLAW_GATEWAY_URL=http://localhost:18789
+Environment=LD_LIBRARY_PATH=/home/YOUR_USER/.venv-whisper/lib/python3.12/site-packages/nvidia/cublas/lib:/home/YOUR_USER/.venv-whisper/lib/python3.12/site-packages/nvidia/cudnn/lib
+WorkingDirectory=/home/YOUR_USER/.openclaw/workspace/projects/hey-jarvis-v3/watcher
+
+[Install]
+WantedBy=default.target

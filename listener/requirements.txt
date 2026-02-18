@@ -1,0 +1,6 @@
+pyaudio
+numpy
+openwakeword
+torch
+torchaudio
+requests
