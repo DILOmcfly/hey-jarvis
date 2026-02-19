@@ -1,0 +1,8 @@
+# Hey Jarvis — Watcher dependencies (WSL2)
+# Install in a venv: pip install -r requirements.txt
+
+faster-whisper>=1.0.0
+nvidia-cublas-cu12
+nvidia-cudnn-cu12
+requests>=2.28.0
+edge-tts>=7.0.0

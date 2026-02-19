@@ -1,5 +1,10 @@
 # 🎙 Hey Jarvis
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+[![OpenClaw](https://img.shields.io/badge/Powered%20by-OpenClaw-purple.svg)](https://github.com/openclaw/openclaw)
+[![Release](https://img.shields.io/github/v/release/DILOmcfly/hey-jarvis)](https://github.com/DILOmcfly/hey-jarvis/releases)
+
 **Open-source voice assistant with bidirectional speech.**  
 Speak → AI processes → hear the response through your speakers. All running locally on your PC.
 
@@ -77,6 +82,34 @@ Hey Jarvis runs as **4 lightweight services** across Windows and WSL2:
 
 ---
 
+## 💬 Real Example
+
+Here's what a real interaction looks like:
+
+```
+👤 You:    "Hey Jarvis"
+🔔 System: *ding* (listening...)
+
+👤 You:    "What time is it in Tokyo right now?"
+🔔 System: *done* (processing...)
+
+  ⚡ Whisper transcribes in 1.8s
+  ⚡ OpenClaw processes in 4.2s
+  ⚡ Edge TTS generates voice in 1.3s
+
+🔊 Speakers: "It's currently 9:43 AM in Tokyo, Wednesday morning."
+
+👤 You:    "Play some lo-fi music on YouTube"
+  (no wake word needed — conversation mode active for 10s)
+
+🔊 Speakers: "Opening lo-fi music on YouTube for you."
+  ⚡ Browser opens YouTube and plays music
+```
+
+The AI can do anything OpenClaw supports: search the web, control your browser, read files, run commands, check your calendar, and more — all by voice.
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -108,7 +141,16 @@ git clone https://github.com/DILOmcfly/hey-jarvis.git
 cd hey-jarvis
 ```
 
-### 2. Setup WSL2 (Watcher + TTS)
+### 2. Quick install (WSL2)
+
+```bash
+# Automated setup — configures venv, dependencies, and systemd
+./install.sh
+```
+
+Or do it manually:
+
+### 2b. Manual Setup WSL2 (Watcher + TTS)
 
 ```bash
 # Create Whisper venv with GPU support
@@ -151,8 +193,8 @@ cp watcher/voice-watcher.service ~/.config/systemd/user/
 
 ```powershell
 # In Windows
-mkdir C:\Users\<you>\oye-ikigai-audio
-mkdir C:\Users\<you>\oye-ikigai-responses
+mkdir C:\Users\<you>\hey-jarvis-audio
+mkdir C:\Users\<you>\hey-jarvis-responses
 ```
 
 ### 6. Start everything
@@ -181,7 +223,7 @@ Say **"Hey Jarvis"** and ask a question. You should hear a ding, speak your ques
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `HJ_AUDIO_DIR` | `~/oye-ikigai-audio` | Shared folder for audio files |
+| `HJ_AUDIO_DIR` | `~/hey-jarvis-audio` | Shared folder for audio files |
 | `HJ_WAKE_WORD` | `hey_jarvis_v0.1` | Wake word model name |
 | `HJ_THRESHOLD` | `0.5` | Wake word sensitivity (0.0-1.0) |
 | `HJ_CONV_WINDOW` | `10` | Seconds for follow-up without wake word |
