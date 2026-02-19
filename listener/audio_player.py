@@ -63,23 +63,30 @@ def play_audio(audio_path: Path):
         import subprocess
         abs_path = str(audio_path.resolve()).replace("'", "''")
 
-        # Estimate duration from file size (~8KB/s for edge-tts mp3)
+        # Generous duration estimate: ~6KB/s for edge-tts mp3 + 8s buffer
         size_kb = audio_path.stat().st_size / 1024
-        estimated_duration = max(int(size_kb / 7) + 3, 5)
+        estimated_duration = max(int(size_kb / 5) + 8, 10)
 
         ps_script = f"""
 Add-Type -AssemblyName PresentationCore
 $p = New-Object System.Windows.Media.MediaPlayer
 $p.Open([uri]"{abs_path}")
-Start-Sleep -Milliseconds 500
+# Wait for media to fully load
+Start-Sleep -Milliseconds 1000
+$duration = $p.NaturalDuration
+if ($duration.HasTimeSpan) {{
+    $waitSecs = [int]$duration.TimeSpan.TotalSeconds + 3
+}} else {{
+    $waitSecs = {estimated_duration}
+}}
 $p.Play()
-Start-Sleep {estimated_duration}
+Start-Sleep $waitSecs
 $p.Close()
 """
-        logger.info("🔊 Playing: %s (~%ds)", audio_path.name, estimated_duration)
+        logger.info("🔊 Playing: %s (~%ds estimated)", audio_path.name, estimated_duration)
         result = subprocess.run(
             ["powershell", "-NoProfile", "-Command", ps_script],
-            capture_output=True, text=True, timeout=estimated_duration + 10
+            capture_output=True, text=True, timeout=estimated_duration + 15
         )
         if result.returncode == 0:
             logger.info("✅ Playback complete")
